@@ -82,7 +82,7 @@ describe('Band, Musician, and Song Models', () => {
         const updatedSong = await song.update({
             year: 1982
         });
-        expect(UpdatedSong.year).toEqual(1982);
+        expect(updatedSong.year).toEqual(1982);
     })
 
     test('can delete Song', async () => {
