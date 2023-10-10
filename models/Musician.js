@@ -14,7 +14,6 @@ Musician.init(
     }
 );
 
-
 module.exports = {
     Musician
 };
