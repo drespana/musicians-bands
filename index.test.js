@@ -31,10 +31,9 @@ describe('Band, Musician, and Song Models', () => {
         // TODO - test updating a band
         const band = await Band.findByPk(1)
         const updatedBand = await band.update({
-            name: "Donald Glover",
-            location: "Atlanta"
+            location:"Atlanta"
         })
-        expect(updatedBand.name).toBe("Donald Glover");
+        expect(updatedBand.location).toBe('Atlanta');
     })
 
     test('can update a Musician', async () => {
