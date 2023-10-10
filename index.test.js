@@ -28,14 +28,11 @@ describe('Band, Musician, and Song Models', () => {
 
     test('can update a Band', async () => {
         // TODO - test updating a band
-        const band = await Band.create({
-            name:"Reign",
-            location:"Chicago"
-        })
-        await band.update({
+        const band = await Band.findByPk(1)
+        const updatedBand = await band.update({
             location:"Atlanta"
         })
-        expect(band.location).toBe('Atlanta');
+        expect(updatedBand.location).toBe('Atlanta');
     })
 
     test('can update a Musician', async () => {
@@ -45,20 +42,17 @@ describe('Band, Musician, and Song Models', () => {
 
     test('can delete a Band', async () => {
         // TODO - test deleting a band
+        const band = await Band.findByPk(1)
+        const deletedBand = await band.destroy();
 
+        expect(deletedBand.id).toBe(1);
 
-        expect('NO TEST').toBe('EXPECTED VALUE HERE');
     })
 
     test('can delete a Musician', async () => {
         // TODO - test deleting a musician
-        const band = await Band.create({
-            name:"Reign",
-            location:"Chicago"
-        })
-        const foundBand = Band.findByPk(1);
-        const deletedBand = foundBand.destroy();
 
-        expect(deletedBand).toEqual(1);
+        expect('NO TEST').toBe('EXPECTED VALUE HERE');
+
     })
 })

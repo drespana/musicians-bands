@@ -14,7 +14,6 @@ Musician.init(
     }
 );
 
-db.sync();
 
 module.exports = {
     Musician
