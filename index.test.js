@@ -41,4 +41,32 @@ describe('Band, Musician, and Song Models', () => {
         // TODO - test deleting a musician
         expect('NO TEST').toBe('EXPECTED VALUE HERE');
     })
+
+    test('can create a Song', async () => {
+        const song = await Song.create({
+            title: "Thriller",
+            year:1981,
+            length: 6
+        });
+        expect(song.title).toEqual("Thriller");
+    })
+
+    test('can find Song', async () => {
+        const songs = await Song.findAll();
+        expect(songs.length).toEqual(1);
+    })
+
+    test('can update Song', async () => {
+        const song = await Song.findByPk(1);
+        const updatedSong = await song.update({
+            year: 1982
+        });
+        expect(song.year).toEqual(1982);
+    })
+
+    test('can delete Song', async () => {
+        const song = await Song.findByPk(1);
+        const deletedSong = await song.destroy();
+        expect(deletedSong.id).toEqual(1);
+    });
 })
