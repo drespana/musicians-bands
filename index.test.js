@@ -1,4 +1,4 @@
-const { sequelize } = require('./db');
+const { db } = require('./db');
 const { Band, Musician, Song } = require('./index')
 
 describe('Band, Musician, and Song Models', () => {
@@ -9,7 +9,7 @@ describe('Band, Musician, and Song Models', () => {
         // the 'sync' method will create tables based on the model class
         // by setting 'force:true' the tables are recreated each time the 
         // test suite is run
-        await sequelize.sync({ force: true });
+        await db.sync({ force: true });
     })
 
     test('can create a Band', async () => {
@@ -19,7 +19,8 @@ describe('Band, Musician, and Song Models', () => {
 
     test('can create a Musician', async () => {
         // TODO - test creating a musician
-        expect('NO TEST').toBe('EXPECTED VALUE HERE');
+        const musician = await Musician.create({name: "Justin Bieber", instrument: "guitar"})
+        expect(musician.name).toBe('Justin Bieber');
     })
 
     test('can update a Band', async () => {
@@ -29,7 +30,12 @@ describe('Band, Musician, and Song Models', () => {
 
     test('can update a Musician', async () => {
         // TODO - test updating a musician
-        expect('NO TEST').toBe('EXPECTED VALUE HERE');
+        const musician = await Musician.findByPk(1)
+        const updatedMusician = await musician.update({
+            name: "Kanye West",
+            instrument: "midi keyboard"
+        })
+        expect(musician.name).toBe('Kanye West');
     })
 
     test('can delete a Band', async () => {
@@ -39,7 +45,9 @@ describe('Band, Musician, and Song Models', () => {
 
     test('can delete a Musician', async () => {
         // TODO - test deleting a musician
-        expect('NO TEST').toBe('EXPECTED VALUE HERE');
+        const musician = await Musician.findByPk(1)
+        const deletedMusician = await musician.destroy();
+        expect(deletedMusician.id).toBe(1);
     })
 
     test('can create a Song', async () => {
