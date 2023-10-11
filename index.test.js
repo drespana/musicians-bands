@@ -138,12 +138,8 @@ describe("Association tests", () => {
         const allSongs = await Song.findAll();
 
         const linkinPark = await Band.findByPk(1);
-        const oneRepublic = await Band.findByPk(2);
-        const arcMonkeys = await Band.findByPk(3);
 
         await linkinPark.addSongs(allSongs);
-        await oneRepublic.addSongs(allSongs);
-        await arcMonkeys.addSongs(allSongs);
 
         const bandWithSongs = await Band.findOne({
             where: {
@@ -153,33 +149,28 @@ describe("Association tests", () => {
         });
 
         const out = bandWithSongs.Songs.length;
-        console.log(out)
+        //console.log(out)
         expect(out).toEqual(3);
     })
 
     test("Many Bands have the Songs", async () => {
         const allBands = await Band.findAll();
 
-        const linkinPark = await Band.findByPk(1);
-        const oneRepublic = await Band.findByPk(2);
-        const arcMonkeys = await Band.findByPk(3);
+        const happyBirthday = await Song.findByPk(1);
 
-        await linkinPark.addSongs(allSongs);
-        await oneRepublic.addSongs(allSongs);
-        await arcMonkeys.addSongs(allSongs);
+        await happyBirthday.addBands(allBands);
 
-        const bandWithSongs = await Band.findOne({
+        const SongWithBands = await Song.findOne({
             where: {
                 id: 1
             },
-            include: Song
+            include: Band
         });
 
 
-        const out = bandWithSongs.Songs.length;
+        const out = SongWithBands.bands.length;
         console.log(out)
         expect(out).toEqual(3);        
-        
     })
     
 })
