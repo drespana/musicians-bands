@@ -91,3 +91,49 @@ describe('Band, Musician, and Song Models', () => {
         expect(deletedSong.id).toEqual(1);
     });
 })
+
+describe("Association tests", () => {
+    beforeAll(async () => {
+        await db.sync({ force: true });
+        const createdBands = await Band.bulkCreate([
+            {name: "Linkin Park", genre: "Rock"},
+            {name: "OneRepublic", genre: "Pop"},
+            {name: "Artic Monkeys", genre: "Rock"}
+        ])
+
+        const createdMusicians = await Musician.bulkCreate([
+            {name: "Chester", instrument: "Vocals"}, // Linkin Park
+            {name: "Mike", instrument: "Synthesizer"}, // Linkin Park
+            {name: "Eddie", instrument: "Guitar"}, // OneRepublic
+            {name: "Alex", instrument: "Keyboard"}, // Arctic Monkeys
+            {name: "Nick", instrument: "Bass"} // Arctic Monkeys
+        ]);
+
+        const createdSongs = await Song.bulkCreate({
+            
+        })
+    })
+
+    test('Band has many musicians', async () => {
+        const linkinPark = await Band.findByPk(1);
+        const chester = await Musician.findByPk(1);
+        const mike = await Musician.findByPk(2);
+        await linkinPark.addMusician(chester);
+        await linkinPark.addMusician(mike);
+        const lpWithMusician = await Band.findOne({
+            where: {
+                id: 1
+            },
+            include: Musician
+        });
+        // const out = await lpWithMusician.Musicians[0].name + ", " + lpWithMusician.Musicians[1].name
+        const bandWithMusicians = await linkinPark.getMusicians();
+        console.log(JSON.stringify(bandWithMusicians[0].name, null, 2));
+        expect(bandWithMusicians[1].name).toEqual("Mike")
+    })
+
+    test("Many Songs can be added to Band", async () => {
+        
+    })
+    
+})
