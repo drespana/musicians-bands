@@ -109,9 +109,11 @@ describe("Association tests", () => {
             {name: "Nick", instrument: "Bass"} // Arctic Monkeys
         ]);
 
-        const createdSongs = await Song.bulkCreate({
-            
-        })
+        const createdSongs = await Song.bulkCreate([
+            {title: "Happy Birthday", year: 1900, length: 60},
+            {title: "Sound of Silence", year: 2001, length: 120},
+            {title: "505", year: 2007, length: 254}
+        ])
     })
 
     test('Band has many musicians', async () => {
@@ -128,11 +130,55 @@ describe("Association tests", () => {
         });
         // const out = await lpWithMusician.Musicians[0].name + ", " + lpWithMusician.Musicians[1].name
         const bandWithMusicians = await linkinPark.getMusicians();
-        console.log(JSON.stringify(bandWithMusicians[0].name, null, 2));
+        // console.log(JSON.stringify(bandWithMusicians[0].name, null, 2));
         expect(bandWithMusicians[1].name).toEqual("Mike")
     })
 
     test("Many Songs can be added to Band", async () => {
+        const allSongs = await Song.findAll();
+
+        const linkinPark = await Band.findByPk(1);
+        const oneRepublic = await Band.findByPk(2);
+        const arcMonkeys = await Band.findByPk(3);
+
+        await linkinPark.addSongs(allSongs);
+        await oneRepublic.addSongs(allSongs);
+        await arcMonkeys.addSongs(allSongs);
+
+        const bandWithSongs = await Band.findOne({
+            where: {
+                id: 1
+            },
+            include: Song
+        });
+
+        const out = bandWithSongs.Songs.length;
+        console.log(out)
+        expect(out).toEqual(3);
+    })
+
+    test("Many Bands have the Songs", async () => {
+        const allBands = await Band.findAll();
+
+        const linkinPark = await Band.findByPk(1);
+        const oneRepublic = await Band.findByPk(2);
+        const arcMonkeys = await Band.findByPk(3);
+
+        await linkinPark.addSongs(allSongs);
+        await oneRepublic.addSongs(allSongs);
+        await arcMonkeys.addSongs(allSongs);
+
+        const bandWithSongs = await Band.findOne({
+            where: {
+                id: 1
+            },
+            include: Song
+        });
+
+
+        const out = bandWithSongs.Songs.length;
+        console.log(out)
+        expect(out).toEqual(3);        
         
     })
     
